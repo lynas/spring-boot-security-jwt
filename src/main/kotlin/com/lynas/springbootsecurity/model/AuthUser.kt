@@ -1,10 +1,7 @@
 package com.lynas.springbootsecurity.model
 
 import org.jetbrains.annotations.NotNull
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 class AuthUser {
@@ -14,6 +11,7 @@ class AuthUser {
     private var id: Long = 0
 
     @NotNull
+    @Column(unique = true)
     private var username = ""
 
     @NotNull
