@@ -8,13 +8,13 @@ class AuthUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private var id: Long = 0
+    var id: Long? = null
 
     @NotNull
     @Column(unique = true)
-    private var username = ""
+    var username : String? = null
 
     @NotNull
-    private var password = ""
+    var password : String? = null
 
 }
