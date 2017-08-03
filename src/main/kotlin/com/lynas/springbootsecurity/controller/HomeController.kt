@@ -14,6 +14,11 @@ class HomeController(val authUserDao: AuthUserDao){
         return "home"
     }
 
+    @RequestMapping("/login")
+    fun login() : String{
+        return "login"
+    }
+
     @RequestMapping("/createAuthUser")
     fun createAuthUser() : String{
         val authUser = AuthUser().apply {
