@@ -17,4 +17,7 @@ class AuthUser {
     @NotNull
     var password : String? = null
 
+    @NotNull
+    var authorities: String? = null
+
 }
