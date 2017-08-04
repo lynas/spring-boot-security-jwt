@@ -1,14 +1,14 @@
 package com.lynas.springbootsecurity.config
 
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 import io.jsonwebtoken.Claims
-import java.util.*
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import java.util.HashMap
-import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mobile.device.Device
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.stereotype.Component
+import java.util.*
+import java.util.stream.Collectors
 
 
 @Component
@@ -18,6 +18,7 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
     val CLAIM_KEY_AUDIENCE = "audience"
     val CLAIM_KEY_CREATED = "created"
     val CLAIM_KEY_EXPIRED = "exp"
+    val CLAIM_KEY_ROLE = "rlu"
 
     val AUDIENCE_UNKNOWN = "unknown"
     val AUDIENCE_WEB = "web"
@@ -39,6 +40,17 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
             username = null
         }
         return username
+    }
+
+    fun getUserRoleFromToken(token: String): String? {
+        var auth: String?
+        try {
+            val claims = getClaimsFromToken(token)
+            auth = claims?.get(CLAIM_KEY_CREATED) as String
+        } catch (e: Exception) {
+            auth = null
+        }
+        return auth
     }
 
     fun getCreatedDateFromToken(token: String): Date? {
@@ -120,10 +132,9 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
 
         claims.put(CLAIM_KEY_USERNAME, userDetails.username)
         claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device))
-
         val createdDate = timeProvider.now()
         claims.put(CLAIM_KEY_CREATED, createdDate)
-
+        claims.put(CLAIM_KEY_ROLE, userDetails.authorities.map { it.authority }.joinToString(","))
         return doGenerateToken(claims)
     }
 
@@ -160,15 +171,11 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
         return refreshedToken
     }
 
-    fun validateToken(token: String, userDetails: UserDetails): Boolean {
-        val user = userDetails as JwtUser
-        val username = getUsernameFromToken(token)
-        val created = getCreatedDateFromToken(token) ?: return false
-        val isTokenExpired = isTokenExpired(token) ?: return false
-        //final Date expiration = getExpirationDateFromToken(token);
-        return username == user.username
-                && !isTokenExpired
-                && !isCreatedBeforeLastPasswordReset(created, user.lastPasswordResetDate)
+    fun validateToken(token: String): Boolean {
+        getUsernameFromToken(token) ?: return false
+        getCreatedDateFromToken(token) ?: return false
+        //TODO need to add if token blacklisted
+        return isTokenExpired(token) ?: return false
     }
 
 }

@@ -1,5 +1,4 @@
 package com.lynas.springbootsecurity.config
-import java.util.Date
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -8,12 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails
 class JwtUser(
         val id: Long?,
         private val username: String,
-        val firstname: String,
-        val lastname: String,
-        val email: String,
-        private val password: String, private val authorities: Collection<GrantedAuthority>,
-        private val enabled: Boolean,
-        val lastPasswordResetDate: Date
+        val firstname: String?,
+        val lastname: String?,
+        val email: String?,
+        private val password: String,
+        private val authorities: Collection<GrantedAuthority>,
+        private val enabled: Boolean
     ) : UserDetails {
 
     override fun getUsername(): String {
