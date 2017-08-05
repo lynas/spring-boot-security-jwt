@@ -24,14 +24,12 @@ class JwtAuthenticationTokenFilter : OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        val authToken = request.getHeader(this.tokenHeader)
-        val username = jwtTokenUtil.getUsernameFromToken(authToken)
-        val rolesString = jwtTokenUtil.getUserRoleFromToken(authToken)
-        val roles = AuthorityUtils.commaSeparatedStringToAuthorityList(rolesString)
-        logger.info("checking authentication für user " + username!!)
-
-        if (username != null && roles != null
+        val authToken: String? = request.getHeader(this.tokenHeader)
+        val username: String? = jwtTokenUtil.getUsernameFromToken(authToken)
+        if (username != null && authToken != null && jwtTokenUtil.validateToken(authToken)
                 && SecurityContextHolder.getContext().authentication == null && jwtTokenUtil.validateToken(authToken)) {
+            val rolesString = jwtTokenUtil.getUserRoleFromToken(authToken)
+            val roles = AuthorityUtils.commaSeparatedStringToAuthorityList(rolesString)
             val jwtUser = JwtUser(null, username, null, null, null, "", roles, true)
             val authentication = UsernamePasswordAuthenticationToken(
                     jwtUser,

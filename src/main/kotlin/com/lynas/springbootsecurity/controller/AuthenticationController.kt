@@ -11,10 +11,12 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")
 class AuthenticationController(val userDetailsService: UserDetailsService,
                                val authenticationManager: AuthenticationManager,
                                val jwtTokenUtil: JwtTokenUtil) {

@@ -30,7 +30,10 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
     @Value("\${jwt.expiration}")
     private val expiration: Long? = null
 
-    fun getUsernameFromToken(token: String): String? {
+    fun getUsernameFromToken(token: String?): String? {
+        if (token == null) {
+            return null
+        }
         var username: String?
         try {
             val claims = getClaimsFromToken(token)
