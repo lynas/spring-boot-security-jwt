@@ -131,7 +131,7 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
 
         claims.put(CLAIM_KEY_USERNAME, userDetails.username)
         claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device))
-        claims.put(CLAIM_KEY_EXPIRED, expiration!! + 172800000)
+        claims.put(CLAIM_KEY_EXPIRED, timeProvider.now().time + 172800000)
         val createdDate = timeProvider.now()
         claims.put(CLAIM_KEY_CREATED, createdDate)
         claims.put(CLAIM_KEY_ROLE, userDetails.authorities.map { it.authority }.joinToString(","))
