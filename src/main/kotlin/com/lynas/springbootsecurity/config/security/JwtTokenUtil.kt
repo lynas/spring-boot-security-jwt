@@ -1,4 +1,4 @@
-package com.lynas.springbootsecurity.config
+package com.lynas.springbootsecurity.config.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -8,7 +8,6 @@ import org.springframework.mobile.device.Device
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.*
-import java.util.stream.Collectors
 
 
 @Component
@@ -132,6 +131,7 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
 
         claims.put(CLAIM_KEY_USERNAME, userDetails.username)
         claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device))
+        claims.put(CLAIM_KEY_EXPIRED, expiration!! + 172800000)
         val createdDate = timeProvider.now()
         claims.put(CLAIM_KEY_CREATED, createdDate)
         claims.put(CLAIM_KEY_ROLE, userDetails.authorities.map { it.authority }.joinToString(","))

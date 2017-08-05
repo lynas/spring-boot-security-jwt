@@ -1,6 +1,6 @@
 package com.lynas.springbootsecurity.controller
 
-import com.lynas.springbootsecurity.config.JwtTokenUtil
+import com.lynas.springbootsecurity.config.security.JwtTokenUtil
 import com.lynas.springbootsecurity.model.request_response.AuthenticationRequest
 import com.lynas.springbootsecurity.model.request_response.AuthenticationResponse
 import org.springframework.http.ResponseEntity
@@ -19,7 +19,7 @@ class AuthenticationController(val userDetailsService: UserDetailsService,
                                val authenticationManager: AuthenticationManager,
                                val jwtTokenUtil: JwtTokenUtil) {
 
-    @PostMapping
+    @PostMapping("/login")
     fun login(@RequestBody authenticationRequest: AuthenticationRequest, device: Device): ResponseEntity<*> {
         // Perform the security
         val authentication = authenticationManager.authenticate(

@@ -1,5 +1,7 @@
 package com.lynas.springbootsecurity.config
 
+import com.lynas.springbootsecurity.config.security.JWTAuthenticationEntryPoint
+import com.lynas.springbootsecurity.config.security.JwtAuthenticationTokenFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

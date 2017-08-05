@@ -1,4 +1,4 @@
-package com.lynas.springbootsecurity.config
+package com.lynas.springbootsecurity.config.security
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -32,7 +32,7 @@ class JwtAuthenticationTokenFilter : OncePerRequestFilter() {
 
         if (username != null && roles != null
                 && SecurityContextHolder.getContext().authentication == null && jwtTokenUtil.validateToken(authToken)) {
-            val jwtUser = JwtUser(null,username,null,null,null,"",roles,true)
+            val jwtUser = JwtUser(null, username, null, null, null, "", roles, true)
             val authentication = UsernamePasswordAuthenticationToken(
                     jwtUser,
                     null,

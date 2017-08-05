@@ -1,4 +1,4 @@
-package com.lynas.springbootsecurity.config
+package com.lynas.springbootsecurity.config.security
 
 import org.springframework.stereotype.Component
 import java.util.*
