@@ -48,7 +48,7 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
         var auth: String?
         try {
             val claims = getClaimsFromToken(token)
-            auth = claims?.get(CLAIM_KEY_CREATED) as String
+            auth = claims?.get(CLAIM_KEY_ROLE) as String
         } catch (e: Exception) {
             auth = null
         }
@@ -175,10 +175,20 @@ class JwtTokenUtil(val timeProvider: TimeProvider) {
     }
 
     fun validateToken(token: String): Boolean {
-        getUsernameFromToken(token) ?: return false
-        getCreatedDateFromToken(token) ?: return false
-        //TODO need to add if token blacklisted
-        return isTokenExpired(token) ?: return false
+        if (getUsernameFromToken(token) == null) {
+            return false
+        }
+        if (getCreatedDateFromToken(token) == null) {
+            return false
+        }
+        val tokeExp = isTokenExpired(token)
+        if (tokeExp == null) {
+            return false
+        }
+        if (tokeExp) {
+            return false
+        }
+        return true
     }
 
 }
