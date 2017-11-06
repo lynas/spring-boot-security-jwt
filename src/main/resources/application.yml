@@ -8,7 +8,7 @@ spring:
     serialization:
       INDENT_OUTPUT: true
   datasource:
-    url: jdbc:mysql://localhost:3306/sbs?useSSL=false
+    url: jdbc:mysql://localhost:3306/test?useSSL=false
     username: root
   jpa:
     show-sql: true
